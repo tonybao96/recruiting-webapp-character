@@ -11,8 +11,8 @@ const AttributeControl = ({ attributeName, value, onIncrement, onDecrement, tota
         <span className="attribute-modifier">Modifier: {modifier}</span>
       </div>
       <div className="attribute-actions">
-        <button onClick={onIncrement} disabled={value >= 20 || totalAttributes >= 70}>+</button>
-        <button onClick={onDecrement} disabled={value <= 1}>-</button>
+        <button onClick={onIncrement} disabled={totalAttributes >= 70}>+</button>
+        <button onClick={onDecrement} disabled={value < 1}>-</button>
       </div>
     </div>
   );

@@ -9,10 +9,13 @@ const CharacterSheet = () => {
     acc[attribute] = 10;
     return acc;
   }, {});
-  const calculateSkillPoints = (intelligence) => {
-    const modifier = Math.floor((intelligence - 10) / 2);
-    return 10 + (4 * modifier);
-};
+  const calculateAvailableSkillPoints = () => {
+    const intelligenceModifier = Math.floor((attributes['Intelligence'] - 10) / 2);
+    const baseSkillPoints = 10;
+    const additionalPoints = intelligenceModifier > 0 ? (4 * intelligenceModifier) : 0;
+    const allocatedPoints = Object.values(skills).reduce((acc, curr) => acc + curr, 0);
+    return baseSkillPoints + additionalPoints - allocatedPoints;
+  };
 
   const [attributes, setAttributes] = useState(initialAttributes);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -22,29 +25,33 @@ const CharacterSheet = () => {
       return acc;
     }, {})
   );
-  const [skillPoints, setSkillPoints] = useState(calculateSkillPoints(attributes['Intelligence']));
+  const [skillPoints, setSkillPoints] = useState(calculateAvailableSkillPoints());
   const totalAttributes = ATTRIBUTE_LIST.reduce((sum, attribute) => sum + attributes[attribute], 0);
 
   useEffect(() => {
-    setSkillPoints(calculateSkillPoints(attributes['Intelligence']));
-  }, [attributes['Intelligence']]);
+    setSkillPoints(calculateAvailableSkillPoints());
+  }, [attributes['Intelligence'], skills]);
 
-  // Increment attribute value
   const incrementAttribute = (attributeName) => {
-    if (totalAttributes < 70) { // Check if total attributes are less than 70 before incrementing
-      setAttributes((prevAttributes) => ({
-        ...prevAttributes,
-        [attributeName]: prevAttributes[attributeName] + 1
-      }));
-    }
-    else{
-        window.alert("Total attributes are at 70, please decrement an attribute to reallocate it");
+    if (totalAttributes < 70 || (totalAttributes === 70 && attributeName === 'Intelligence')) {
+      setAttributes((prevAttributes) => {
+        const updatedAttributes = {
+          ...prevAttributes,
+          [attributeName]: prevAttributes[attributeName] + 1,
+        };
+        if (attributeName === 'Intelligence') {
+          setSkillPoints(calculateAvailableSkillPoints(updatedAttributes));
+        }
+        return updatedAttributes;
+      });
+    } else {
+      window.alert("Total attributes are at 70, please decrement an attribute to reallocate it");
     }
   };
 
   // Decrement attribute value
   const decrementAttribute = (attributeName) => {
-    if (attributes[attributeName] > 1) { // Ensure attribute value does not go below 1
+    if (attributes[attributeName] > 0) { // Ensure attribute value does not go below 0
       setAttributes((prevAttributes) => ({
         ...prevAttributes,
         [attributeName]: prevAttributes[attributeName] - 1
@@ -141,7 +148,7 @@ const CharacterSheet = () => {
                     <button onClick={() => allocateSkillPoint(skill.name)}>+</button>
                     <button onClick={() => removeSkillPoint(skill.name)}>-</button>
                     <span>modifier ({skill.attributeModifier}): {attributeModifier}</span>
-                    <span>total: {totalSkillValue}</span>
+                    <span className='skill-total'>total: {totalSkillValue}</span>
                 </div>
                 );
             })}
