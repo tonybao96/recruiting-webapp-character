@@ -1,0 +1,85 @@
+
+.character-sheet {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .skills {
+    flex-basis: 30%; 
+    max-width: 30%; 
+  }
+  
+  .skill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px; /* Space between skill rows */
+  }
+  
+  .skill button {
+    margin: 0 5px; /* Space around buttons */
+  }
+  
+  .skill-points {
+    font-weight: bold;
+    margin-bottom: 10px; /* Add some space between the skill points line and the first skill */
+  }
+  
+  .attributes-container {
+    flex-basis: 45%; 
+    max-width: 45%; 
+  }
+  
+  .classes-container {
+    flex-basis: 15%; 
+    max-width: 15%; 
+  }
+  
+  .classes {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .class-name {
+    cursor: pointer; 
+    margin-bottom: 5px;
+  }
+  
+  .class-name.eligible {
+   background-color:aquamarine;
+  }
+  
+  .class-requirements {
+    background-color:black; 
+    border: 1px solid #ddd; 
+    padding: 10px;
+    margin-bottom: 10px; 
+  }
+
+  .character-sheet {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .attribute-control {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 10px;
+  }
+  
+  .attribute-name,
+  .attribute-value,
+  .attribute-modifier {
+    margin-right: 10px; 
+  }
+
+  .attribute-actions {
+    display: flex;
+  }
+  
+  button {
+    margin-left: 5px; 
+  }
+  
+  
